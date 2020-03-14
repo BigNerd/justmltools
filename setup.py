@@ -1,11 +1,13 @@
 import setuptools
+from version import *
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="justmltools",
-    version="0.0.1",
+    version=get_version(),
     author="Matthias Burbach",
     author_email="matthias.burbach@web.de",
     description="A library for recurring tasks in machine learning projects",
