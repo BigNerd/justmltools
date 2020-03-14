@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="justmltools",
-    version=get_version(),
+    version="0.0.1",
     author="Matthias Burbach",
     author_email="matthias.burbach@web.de",
     description="A library for recurring tasks in machine learning projects",
