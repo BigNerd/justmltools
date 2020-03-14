@@ -1,0 +1,20 @@
+@startuml
+abstract class AbstractRepoDownloader
+{
+  find_or_download_input_config_object()
+  find_or_download_input_data_object()
+  find_or_download_model_object()
+  _download_object()
+}
+class BucketRepoDownloader
+{
+  _download_object()
+}
+BucketRepoDownloader --|> AbstractRepoDownloader
+class MlflowRepoDownloader
+{
+  resolved_run_id
+  _download_object()
+}
+MlflowRepoDownloader --|> AbstractRepoDownloader
+@enduml

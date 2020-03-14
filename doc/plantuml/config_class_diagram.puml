@@ -1,0 +1,31 @@
+@startuml
+abstract class AbstractDataPathConfig
+{
+  get_prefix()
+  get_input_config_path()
+  get_input_data_path()
+  get_model_path()
+  get_output_path()
+  join()
+  _join_segments()
+  _get_input_config_segments()
+  _get_input_data_segments()
+  _get_model_segments()
+  _get_output_segments()
+}
+class BucketDataPathConfig
+{
+  _join_segments()
+}
+BucketDataPathConfig --|> AbstractDataPathConfig
+class LocalDataPathConfig
+{
+  _join_segments()
+}
+LocalDataPathConfig --|> AbstractDataPathConfig
+class MlflowDataPathConfig
+{
+  _join_segments()
+}
+MlflowDataPathConfig --|> AbstractDataPathConfig
+@enduml

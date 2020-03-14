@@ -1,0 +1,43 @@
+@startuml
+class AwsCredentials
+{
+  aws_secret_access_key_id
+  aws_secret_access_key
+  region_name
+}
+class S3BucketObjectDownloader
+{
+  download()
+}
+S3BucketObjectDownloader --> AwsCredentials
+class S3BucketObjectFinder
+{
+  get_matching_s3_objects()
+  get_matching_s3_keys()
+}
+S3BucketObjectFinder --> AwsCredentials
+class S3BucketObjectUploader
+{
+  upload()
+}
+S3BucketObjectUploader --> AwsCredentials
+class S3Downloader
+{
+  download()
+}
+S3Downloader --> AwsCredentials
+S3Downloader --> S3BucketObjectDownloader
+S3Downloader --> S3BucketObjectFinder
+class S3Uploader
+{
+  upload()
+}
+S3Uploader --> AwsCredentials
+S3Uploader --> S3BucketObjectUploader
+class S3Url
+{
+  bucket
+  key
+  parse_from()
+}
+@enduml

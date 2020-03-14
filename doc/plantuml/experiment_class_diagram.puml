@@ -1,0 +1,24 @@
+@startuml
+abstract class AbstractConfig
+{
+  properties()
+  property_names()
+  _read_config_json_file()
+}
+abstract class AbstractExperiment
+{
+  _get_bucket_repo_downloader()
+  _get_mlflow_repo_downloader()
+  _get_local_data_path_config()
+  _get_bucket_data_path_config()
+  _get_mlflow_data_path_config()
+  _get_file_system_prefix()
+  _get_bucket_prefix()
+}
+class Tracker
+{
+  start_run()
+  track()
+  end_run()
+}
+@enduml
