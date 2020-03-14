@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 from typing import List
 
-from justmltools.gen.class_info import ClassInfo
-from justmltools.gen.parser import Parser
+from gen.class_info import ClassInfo
+from gen.parser import Parser
 
 
 class TestGenerator:
@@ -20,7 +20,7 @@ class TestGenerator:
                 continue  # skip generating a test for a class which is special
             target_dir_path: str = os.path.join(
                 src_dir_path,
-                ("tests." + package_name).replace(".", os.path.sep)
+                ("tests" + package_name[package_name.index("."):]).replace(".", os.path.sep)
             )
             target_file_path: str = os.path.join(
                 target_dir_path,
@@ -45,7 +45,7 @@ class TestGenerator:
 
 
 if __name__ == '__main__':
-    src_dir_path = os.path.join(os.path.dirname(__file__), "..", "..")
+    src_dir_path = os.path.join(os.path.dirname(__file__), "..")
     generator: TestGenerator = TestGenerator()
     for short_package_name in ("config", "experiment", "repo", "s3"):
         generator.generate(

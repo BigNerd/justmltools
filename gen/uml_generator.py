@@ -1,8 +1,8 @@
 import os
 from typing import List
 
-from justmltools.gen.class_info import ClassInfo
-from justmltools.gen.parser import Parser
+from gen.class_info import ClassInfo
+from gen.parser import Parser
 
 
 class UmlGenerator:
@@ -52,8 +52,8 @@ class UmlGenerator:
 
 
 if __name__ == '__main__':
-    src_dir_path = os.path.join(os.path.dirname(__file__), "..", "..")
-    target_dir_path = os.path.join(os.path.dirname(__file__), "..", "..", "doc", "plantuml")
+    src_dir_path = os.path.join(os.path.dirname(__file__), "..")
+    target_dir_path = os.path.join(os.path.dirname(__file__), "..", "doc", "plantuml")
     generator: UmlGenerator = UmlGenerator()
     for short_package_name in ("config", "experiment", "repo", "s3"):
         generator.generate(

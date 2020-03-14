@@ -1,7 +1,7 @@
 import os
 import re
-from typing import List, Optional
-from justmltools.gen.class_info import ClassInfo
+from typing import List
+from gen.class_info import ClassInfo
 
 
 class Parser:
