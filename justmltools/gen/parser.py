@@ -15,34 +15,20 @@ class Parser:
                 continue
             else:
                 module_path = os.path.join(package_path, module_file_name)
-                class_name,\
-                super_class_name,\
-                used_classes,\
-                public_attributes,\
-                protected_attributes,\
-                public_methods,\
-                protected_methods =\
-                    self.__parse_module(package_name, module_path)
                 module_name = module_file_name.replace(".py", "")
-                parsed_modules.append(
-                    ClassInfo(
-                        package_name=package_name,
-                        module_name=module_name,
-                        class_name=class_name,
-                        super_class_name=super_class_name,
-                        used_classes=used_classes,
-                        public_attributes=public_attributes,
-                        protected_attributes=protected_attributes,
-                        public_methods=public_methods,
-                        protected_methods=protected_methods
-                    )
+                class_info: ClassInfo = self.__parse_module(
+                    package_name=package_name,
+                    module_path=module_path,
+                    module_name=module_name
                 )
+                parsed_modules.append(class_info)
         return parsed_modules
 
     @staticmethod
     def __parse_module(
             package_name: str,
-            module_path: str) -> [str, Optional[str], List[str], List[str], List[str], List[str], List[str]]:
+            module_path: str,
+            module_name: str) -> ClassInfo:
         class_name = None
         super_class_name = None
         used_classes = []
@@ -89,4 +75,16 @@ class Parser:
                         next_method_is_property = False
                     else:
                         protected_methods.append(match.group(1).split("(")[0])
-        return class_name, super_class_name, used_classes, public_attributes, protected_attributes, public_methods, protected_methods
+
+        class_info = ClassInfo(
+            package_name=package_name,
+            module_name=module_name,
+            class_name=class_name,
+            super_class_name=super_class_name,
+            used_classes=used_classes,
+            public_attributes=public_attributes,
+            protected_attributes=protected_attributes,
+            public_methods=public_methods,
+            protected_methods=protected_methods
+        )
+        return class_info
