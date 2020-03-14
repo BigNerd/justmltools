@@ -14,7 +14,7 @@ class S3BucketObjectDownloader:
             self.__s3 = boto3.resource("s3")
         else:
             self.__s3 = boto3.resource(
-                's3',
+                "s3",
                 aws_access_key_id=credentials.aws_secret_access_key_id,
                 aws_secret_access_key=credentials.aws_secret_access_key,
                 region_name=credentials.region_name
