@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v2
@@ -37,3 +37,17 @@ jobs:
     - name: Perform unit tests
       run: |
         python -m unittest discover
+    - name: Install setuptools and wheel
+      run: >-
+        python3 -m
+        pip install
+        --user
+        --upgrade
+        setuptools
+        wheel
+    - name: Build a source tarball and a binary wheel
+      run: >-
+        python3
+        setup.py
+        sdist
+        bdist_wheel
