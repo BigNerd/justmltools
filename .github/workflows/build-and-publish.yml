@@ -20,7 +20,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+    - run: |
+        echo "Fetch all history for all tags and branches..."
+        git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
