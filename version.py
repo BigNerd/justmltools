@@ -19,7 +19,7 @@ from os.path import dirname, exists, join
 
 
 def get_version():
-    version = "latest"  # default if version.txt does not exist
+    version = "0.0.0"  # default if version.txt does not exist
     # Extract the version from the version.txt file
     version_file: str = join(dirname(__file__), 'version.txt')
     if exists(version_file):
