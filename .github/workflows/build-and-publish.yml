@@ -60,3 +60,8 @@ jobs:
         setup.py
         sdist
         bdist_wheel
+    - name: release
+      if: contains(github.ref, '.')
+      run: >-
+       echo "releasing..."
+       echo "release done"
