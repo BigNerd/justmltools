@@ -15,15 +15,16 @@ and use the results of get_version() as your package version:
 
 __all__ = 'get_version'
 
-from os.path import dirname, join
+from os.path import dirname, exists, join
 
 
 def get_version():
+    version = "latest"  # default if version.txt does not exist
     # Extract the version from the version.txt file
-    d = dirname(__file__)
-    with open(join(d, 'version.txt')) as f:
-        version = f.read()
-
+    version_file: str = join(dirname(__file__), 'version.txt')
+    if exists(version_file):
+        with open(version_file) as f:
+            version = f.read()
     return version
 
 

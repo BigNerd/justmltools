@@ -51,6 +51,7 @@ jobs:
       run: |
         echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
     - name: Write the version
+      if: startsWith(github.event.ref, 'refs/tags')
       id: write_version
       run: |
         echo ${{ steps.get_version.outputs.VERSION }} > version.txt
