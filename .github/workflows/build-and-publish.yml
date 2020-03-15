@@ -21,7 +21,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        echo "Fetch all history for all tags and branches..."
         git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
