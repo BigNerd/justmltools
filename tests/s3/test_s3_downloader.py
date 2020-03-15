@@ -7,4 +7,3 @@ class TestS3Downloader(TestCase):
 
     def test_download(self):
         self.skipTest("not implemented yet")
-

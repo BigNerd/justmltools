@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python package
+name: Build and Publish
 
 on:
   push:
@@ -19,6 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -60,8 +61,13 @@ jobs:
         setup.py
         sdist
         bdist_wheel
-    - name: release
-      if: contains(github.ref, '.')
-      run: >-
-       echo "releasing..."
-       echo "release done"
+    - name: Publish distribution to Test PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        password: ${{ secrets.PYPI_TEST_UPLOAD_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
+    - name: Publish distribution to PyPI
+      if: startsWith(github.event.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        password: ${{ secrets.PYPI_UPLOAD_TOKEN }}

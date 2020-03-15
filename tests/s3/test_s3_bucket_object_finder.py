@@ -10,4 +10,3 @@ class TestS3BucketObjectFinder(TestCase):
 
     def test_get_matching_s3_keys(self):
         self.skipTest("not implemented yet")
-

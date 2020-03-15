@@ -19,7 +19,7 @@ from os.path import dirname, join
 
 
 def get_version():
-    # Extract the version from the PKG-INFO file.
+    # Extract the version from the version.txt file
     d = dirname(__file__)
     with open(join(d, 'version.txt')) as f:
         version = f.read()
