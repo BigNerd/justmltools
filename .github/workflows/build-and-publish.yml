@@ -6,7 +6,8 @@ name: Python package
 on:
   push:
     branches: [ master ]
-    tags: [ master ]
+    tags:
+      - '*'
 
 jobs:
   build:
