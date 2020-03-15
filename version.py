@@ -3,7 +3,13 @@
 """
 Gets the current version number.
 If in a git repository, it is the current git tag.
-Otherwise it is the one contained in the PKG-INFO file.
+
+If the current commit is not tagged, the version is the tag of the last tagged ancestor commit
+plus a suffix .post<n>, where <n> is the number of commits after the last tagged ancestor commit.
+
+If the git repository has uncommitted changes in addition to the last commit, another suffix .dev1 is appended, too.
+
+In not in a git repo, the version is the one contained in the PKG-INFO file (if it exists).
 
 To use this script, simply import it in your setup.py file
 and use the results of get_version() as your package version:
@@ -65,16 +71,6 @@ def get_version():
         with open(join(d, 'PKG-INFO')) as f:
             version = version_re.search(f.read()).group(1)
 
-    return version
-
-
-def get_version_the_simple_way():
-    version = "0.0.0"  # default if version.txt does not exist
-    # Extract the version from the version.txt file
-    version_file: str = join(dirname(__file__), 'version.txt')
-    if exists(version_file):
-        with open(version_file) as f:
-            version = f.read()
     return version
 
 
