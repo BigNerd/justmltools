@@ -59,7 +59,7 @@ class AbstractRepoDownloader(abc.ABC):
             self.__unzip_file(zip_file_path=target_path)
             return target_path_without_zip_extension
 
-        # download zipped or unzipped file from S3
+        # download zipped or unzipped file from remote repo
         remote_path = base_remote_path
         for name_segment in additional_name_segments:
             remote_path = "/".join([remote_path, name_segment])

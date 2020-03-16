@@ -1,4 +1,5 @@
 # This program is placed into the public domain.
+# Source: https://gist.github.com/pwithnall/7bc5f320b3bdf418265a
 
 """
 Gets the current version number.
