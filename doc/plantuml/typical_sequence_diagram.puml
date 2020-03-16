@@ -3,10 +3,12 @@
 Experiment -> RepoDownloader: find_or_download_input_config("my_config.json")
 Experiment <-- RepoDownloader: "/local_prefix/input/config/my_config.json"
 
+Experiment -> Experiment: get_input_data_file_name_from_my_config()
+
 Experiment -> RepoDownloader: find_or_download_input_data("my_data.csv.zip")
 Experiment <-- RepoDownloader: "/local_prefix/input/data/my_data.csv"
 
-Experiment -> Experiment: train()
+Experiment -> Experiment: train_my_model()
 
 Experiment -> Tracker: track(my_config, "model/my_model")
 
