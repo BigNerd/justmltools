@@ -1,0 +1,13 @@
+@startuml
+-> Experiment: run()
+Experiment -> RepoDownloader: find_or_download_input_config("my_config.json")
+Experiment <-- RepoDownloader: "/local_prefix/input/config/my_config.json"
+
+Experiment -> RepoDownloader: find_or_download_input_data("my_data.csv.zip")
+Experiment <-- RepoDownloader: "/local_prefix/input/data/my_data.csv"
+
+Experiment -> Experiment: train()
+
+Experiment -> Tracker: track(my_config, "model/my_model")
+
+@enduml
