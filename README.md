@@ -14,3 +14,7 @@ From [PyPi](https://pypi.python.org/pypi/justmltools/):
 ```
 pip3 install justmltools
 ```
+
+## Documentation
+
+Find documentation on when and how to use justmltools in the [Wiki](https://github.com/BigNerd/justmltools/wiki).
