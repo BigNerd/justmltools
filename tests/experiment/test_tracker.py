@@ -8,7 +8,7 @@ def mocked_os_path_isdir(path: str) -> bool:
     return "dir" in path
 
 
-def mocked_make_archive(base_name: str, format: str, root_dir: str):
+def mocked_make_archive(base_name: str, format: str, root_dir: str, base_dir: str):
     pass
 
 

@@ -3,7 +3,7 @@ import os
 import shutil
 
 from typing import Any, Dict, List, Optional
-from os.path import basename, sep
+from os.path import basename, dirname, sep
 
 
 class Tracker:
@@ -48,7 +48,7 @@ class Tracker:
 
     @staticmethod
     def __zip_dir(dir_path: str) -> str:
-        shutil.make_archive(base_name=dir_path, format="zip", root_dir=dir_path)
+        shutil.make_archive(base_name=dir_path, format="zip", root_dir=dirname(dir_path), base_dir=basename(dir_path))
         return dir_path + ".zip"
 
     @staticmethod
