@@ -55,7 +55,8 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
     @lru_cache(maxsize=1)
     def __get_run_data(self) -> RunData:
         client: MlflowClient = self.__get_mlflow_client()
-        run_data: RunData = client.get_run(run_id=self.resolved_run_id)
+        run: Run = client.get_run(run_id=self.resolved_run_id)
+        run_data: RunData = run.data
         return run_data
 
     def __resolve_run_id(self, run_id: str) -> str:
