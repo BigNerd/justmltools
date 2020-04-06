@@ -14,6 +14,7 @@ class Tracker:
 
     def start_run(self):
         mlflow.set_experiment(self.__experiment_name)
+        mlflow.start_run()
 
     def track(self,
               artifact_file_paths: Optional[List[str]] = None,

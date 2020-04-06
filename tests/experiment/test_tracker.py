@@ -16,6 +16,10 @@ def mocked_mlflow_set_experiment(experiment_name: str):
     pass
 
 
+def mocked_mlflow_start_run():
+    pass
+
+
 def mocked_mlflow_log_artifact(local_path: str, artifact_path: str):
     pass
 
@@ -44,11 +48,13 @@ class TestTracker(TestCase):
     @patch('mlflow.log_param', side_effect=mocked_mlflow_log_param)
     @patch('mlflow.log_artifact', side_effect=mocked_mlflow_log_artifact)
     @patch('mlflow.set_experiment', side_effect=mocked_mlflow_set_experiment)
+    @patch('mlflow.start_run', side_effect=mocked_mlflow_start_run())
     @patch('shutil.make_archive', side_effect=mocked_make_archive)
     @patch('os.path.isdir', side_effect=mocked_os_path_isdir)
     def test_(self,
               os_path_isdir_mock: MagicMock,
               shutil_make_archive_mock: MagicMock,
+              mlflow_start_run_mock: MagicMock,
               mlflow_set_experiment_mock: MagicMock,
               mlflow_log_artifact_mock: MagicMock,
               mlflow_log_param_mock: MagicMock,
@@ -58,6 +64,7 @@ class TestTracker(TestCase):
         self.sut: Tracker = Tracker(experiment_name="my_test_experiment", artifact_root_path="path_to_my_artifacts")
         self.sut.start_run()
         mlflow_set_experiment_mock.assert_called_once()
+        mlflow_start_run_mock.assert_called_once()
         # perform the actual experiment collecting data to track... and then data over to the tracker
         self.sut.track(
             artifact_file_paths=["my_artifact_path_1", "my_artifact_path_2"],
