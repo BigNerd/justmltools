@@ -35,9 +35,7 @@ class S3BucketObjectDownloader:
                 raise FileExistsError(errno.EEXIST, os.strerror(errno.EEXIST), target_path_and_name)
 
         if not key.endswith('/'):  # object is file, not a 'folder' object
-            target_path = target_path_and_name.rsplit('/', 1)  # split by the last forward slash
-            if len(target_path) > 1 and not os.path.isdir(target_path[0]):
-                pathlib.Path(target_path[0]).mkdir(parents=True, exist_ok=True)
+            pathlib.Path(target_path_and_name).parent.mkdir(parents=True, exist_ok=True)
             self.__s3.Bucket(bucket).download_file(key, target_path_and_name)
         else:  # object is a 'folder'
             if not os.path.isdir(target_path_and_name):
