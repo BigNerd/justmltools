@@ -5,6 +5,8 @@ from version import get_version
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+requirements = ['boto3', 'mlflow']
+
 setuptools.setup(
     name="justmltools",
     version=get_version(),
@@ -15,6 +17,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/BigNerd/justmltools",
     packages=setuptools.find_packages(include=("justmltools", "justmltools.*")),
+    install_requires=requirements,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
