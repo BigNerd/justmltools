@@ -26,4 +26,5 @@ class S3BucketObjectUploader:
         :param key: Key of the S3 object to upload to
         """
 
-        self.__s3.Bucket(bucket).upload_file(source_path_and_name, bucket, key)
+        bucket = self.__s3.Bucket(bucket)
+        bucket.upload_file(Filename=source_path_and_name, Key=key)
