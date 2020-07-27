@@ -6,6 +6,14 @@ from typing import Any, Dict, List, Optional
 from os.path import basename, dirname, sep
 
 
+class Metric:
+
+    def __init__(self, key: str, value, step: Optional[int]):
+        self.key = key
+        self.value = value
+        self.step = step
+
+
 class Tracker:
 
     def __init__(self, experiment_name: str, artifact_root_path: str):
@@ -28,7 +36,13 @@ class Tracker:
                 mlflow.log_param(parameter_name, parameter_value)
         if metrics:
             for metric_name, metric_value in metrics.items():
-                mlflow.log_metric(metric_name, metric_value)
+                if isinstance(metric_value, Metric):
+                    step: int = 0
+                    if metric_value.step is not None:
+                        step = metric_value.step
+                    mlflow.log_metric(key=metric_value.key, value=metric_value.value, step=step)
+                else:
+                    mlflow.log_metric(metric_name, metric_value)
         if tags:
             for tag_name, tag_value in tags.items():
                 mlflow.set_tag(tag_name, tag_value)

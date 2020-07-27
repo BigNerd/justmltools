@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-from justmltools.experiment.tracker import Tracker
+from justmltools.experiment.tracker import Tracker, Metric
 
 
 def mocked_os_path_isdir(path: str) -> bool:
@@ -28,7 +28,7 @@ def mocked_mlflow_log_param(param_name: str, param_value):
     pass
 
 
-def mocked_mlflow_log_metric(metric_name: str, metric_value):
+def mocked_mlflow_log_metric(key: str, value, step=None):
     pass
 
 
@@ -69,7 +69,7 @@ class TestTracker(TestCase):
         self.sut.track(
             artifact_file_paths=["my_artifact_path_1", "my_artifact_path_2"],
             parameters={"my_param": "my_param_value"},
-            metrics={"my_metric": 1.0},
+            metrics={"my_metric": 1.0, "my_other_metric": Metric("my_other_metric", 2.0, 2)},
             tags={"my_tag": "my_tag_value"}
         )
         mlflow_log_param_mock.assert_called()
