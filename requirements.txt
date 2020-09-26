@@ -1,2 +1,3 @@
 boto3
 mlflow
+six==1.15.0
