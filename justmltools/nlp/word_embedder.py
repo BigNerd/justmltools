@@ -155,7 +155,8 @@ class WordEmbedder:
                     embedding_matrix[next_word_index] = np.asarray(tokens[1:], dtype='float32')
                     next_word_index += 1
                 else:
-                    print(f"skipping line with compound word {word} because it splits into {word_sequence}")
+                    #print(f"skipping line with compound word {word} because it splits into {word_sequence}")
+                    pass
         embedding_file.close()
         print(f"loaded {next_word_index - 1} word embeddings")
         non_lower_case_percentage: float = 100 * number_of_non_lower_case_words / max(next_word_index, 1)
