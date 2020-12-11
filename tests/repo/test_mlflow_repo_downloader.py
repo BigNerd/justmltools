@@ -24,11 +24,26 @@ class TestMlflowRepoDownloader(TestCase):
         run_id: str = "my_test_run_id"
         sut: MlflowRepoDownloader = self.create_downloader(run_id)
         self.assertEqual(run_id, sut.resolved_run_id)
+        expected_path = "my_config_dir/my_config.json"
+        with patch.object(
+                sut, '_AbstractRepoDownloader__find_or_download_object', return_value=expected_path) as method:
+            actual_path: str = sut.find_or_download_input_config_object("my_config.json")
+            self.assertEqual(expected_path, actual_path)
+
+    def test_find_or_download_output_object(self):
+        run_id: str = "my_test_run_id"
+        sut: MlflowRepoDownloader = self.create_downloader(run_id)
+        self.assertEqual(run_id, sut.resolved_run_id)
+        expected_path = "my_output_dir/my_output.csv"
+        with patch.object(
+                sut, '_AbstractRepoDownloader__find_or_download_object', return_value=expected_path) as method:
+            actual_path: str = sut.find_or_download_output_object("my_output.csv")
+            self.assertEqual(expected_path, actual_path)
 
     def test_find_or_download_params(self):
         run_id: str = "my_test_run_id"
         sut: MlflowRepoDownloader = self.create_downloader(run_id)
-        params = [ Param(key="test_param", value="test_param_value") ]
+        params = [Param(key="test_param", value="test_param_value")]
         run_data: RunData = RunData(metrics=None, params=params, tags=None)
         with patch.object(sut, '_MlflowRepoDownloader__get_run_data', return_value=run_data) as method:
             run_params: Dict[str, Any] = sut.find_or_download_run_params()

@@ -43,6 +43,16 @@ class AbstractRepoDownloader(abc.ABC):
         )
         return local_path
 
+    def find_or_download_output_object(self, name_segments: List[str]) -> str:
+        base_local_path: str = self._local_data_path_config.get_output_path()
+        base_remote_path = self._remote_data_path_config.get_output_path()
+        local_path: str = self.__find_or_download_object(
+            base_local_path=base_local_path,
+            base_remote_path=base_remote_path,
+            additional_name_segments=name_segments
+        )
+        return local_path
+
     def __find_or_download_object(
             self, base_local_path: str, base_remote_path: str, additional_name_segments: List[str]) -> str:
         target_path: str = base_local_path
