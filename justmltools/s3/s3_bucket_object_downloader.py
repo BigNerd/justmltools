@@ -40,3 +40,14 @@ class S3BucketObjectDownloader:
         else:  # object is a 'folder'
             if not os.path.isdir(target_path_and_name):
                 pathlib.Path(target_path_and_name).mkdir(parents=True, exist_ok=True)
+
+    def get(self, bucket: str, key: str):
+        """
+        Gets object body from s3 bucket
+
+        :param bucket: Name of the S3 bucket
+        :param key: Key of the S3 object to download
+        :return: botocore.response.StreamingBody
+        """
+        body = self.__s3.Object(bucket, key).get()["Body"]
+        return body
