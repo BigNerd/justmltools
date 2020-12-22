@@ -36,12 +36,21 @@ class Parser:
         protected_attributes = []
         public_methods = []
         protected_methods = []
+        from_style_imports = []
         with open(module_path, "r") as file:
             next_method_is_property = False
             while True:
                 line: str = file.readline()
                 if not line:
                     break
+
+                match = re.match(r'from (.*) import (.*)', line)
+                if match is not None:
+                    from_part: str = match.group(1).strip(' ')
+                    import_parts: List[str] = match.group(2).split(",")
+                    import_parts = [part.split(" as ")[0].strip(' ') for part in import_parts]
+                    for import_part in import_parts:
+                        from_style_imports.append(f"{from_part}.{import_part}")
 
                 match = re.match('from ' + package_name.replace(".", r"\.") + r'\.(.*) import ([A-Z].*)', line)
                 if match is not None:
@@ -85,6 +94,7 @@ class Parser:
             public_attributes=public_attributes,
             protected_attributes=protected_attributes,
             public_methods=public_methods,
-            protected_methods=protected_methods
+            protected_methods=protected_methods,
+            from_style_imports=from_style_imports,
         )
         return class_info

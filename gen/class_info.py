@@ -12,7 +12,8 @@ class ClassInfo:
                  public_attributes: List[str],
                  protected_attributes: List[str],
                  public_methods: List[str],
-                 protected_methods: List[str]):
+                 protected_methods: List[str],
+                 from_style_imports: List[str]):
         self.__package_name: str = package_name
         self.__module_name: str = module_name
         self.__class_name: str = class_name
@@ -22,6 +23,7 @@ class ClassInfo:
         self.__protected_attributes: List[str] = protected_attributes
         self.__public_methods: List[str] = public_methods
         self.__protected_methods: List[str] = protected_methods
+        self.__from_style_imports: List[str] = from_style_imports
 
     @property
     def package_name(self) -> str:
@@ -58,6 +60,10 @@ class ClassInfo:
     @property
     def protected_methods(self) -> List[str]:
         return self.__protected_methods
+
+    @property
+    def from_style_imports(self) -> List[str]:
+        return self.__from_style_imports
 
     @property
     def is_abstract(self) -> bool:

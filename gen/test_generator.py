@@ -1,4 +1,5 @@
 import os
+from inflection import underscore
 from pathlib import Path
 from typing import List
 
@@ -31,15 +32,31 @@ class TestGenerator:
             self.__generate_test_file(target_file_path, class_info)
 
     def __generate_test_file(self, target_file_path: str, class_info: ClassInfo):
+        def excluded_from_style_import(from_style_import: str) -> bool:
+            excluded_prefixes = ['typing.']
+            for excluded_prefix in excluded_prefixes:
+                if from_style_import.startswith(excluded_prefix):
+                    return True
+            return False
+        from_style_imports = [from_style_import for from_style_import in class_info.from_style_imports
+                              if not excluded_from_style_import(from_style_import)]
         with open(target_file_path, "w") as file:
             file.write("from unittest import TestCase\n")
-            file.write("\n")
-            file.write(f"from {class_info.package_name}.{class_info.module_name} import {class_info.class_name}\n")
+            file.write("from unittest.mock import MagicMock, patch\n")
             file.write("\n" * 2)
             file.write(f"class Test{class_info.class_name}(TestCase):\n")
             file.write("\n")
             for public_method in class_info.public_methods:
-                file.write(f"    def test_{public_method}(self):\n")
+                for from_style_import in from_style_imports:
+                    file.write(f"    @patch('{from_style_import}')\n")
+                file.write(f"    def test_{public_method}(\n")
+                file.write(f"        self,\n")
+                for from_style_import in reversed(from_style_imports):
+                    param_name = underscore(from_style_import.split(".")[-1]) + "_mock"
+                    file.write(f"        {param_name}: MagicMock,\n")
+                file.write(f"    ):\n")
+                import_sut = f"from {class_info.package_name}.{class_info.module_name} import {class_info.class_name}"
+                file.write(f"        {import_sut}\n")
                 file.write(f"        self.skipTest(\"not implemented yet\")\n")
                 file.write("\n")
 
