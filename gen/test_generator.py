@@ -48,7 +48,11 @@ class TestGenerator:
             file.write("\n")
             for public_method in class_info.public_methods:
                 for from_style_import in from_style_imports:
-                    file.write(f"    @patch('{from_style_import}')\n")
+                    auto_spec = ""
+                    if from_style_import.split(".")[-1][0].isupper():
+                        # only use autospec=True for imported classes, not for imported functions
+                        auto_spec = ", autospec=True"
+                    file.write(f"    @patch('{from_style_import}'{auto_spec})\n")
                 file.write(f"    def test_{public_method}(\n")
                 file.write(f"        self,\n")
                 for from_style_import in reversed(from_style_imports):

@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 class TestS3Uploader(TestCase):
 
-    @patch('justmltools.s3.aws_credentials.AwsCredentials')
-    @patch('justmltools.s3.s3_bucket_object_uploader.S3BucketObjectUploader')
+    @patch('justmltools.s3.aws_credentials.AwsCredentials', autospec=True)
+    @patch('justmltools.s3.s3_bucket_object_uploader.S3BucketObjectUploader', autospec=True)
     def test_upload(
         self,
         s3_bucket_object_uploader_mock: MagicMock,
@@ -15,7 +15,7 @@ class TestS3Uploader(TestCase):
         bucket = ""
 
         from justmltools.s3.s3_uploader import S3Uploader
-        sut = S3Uploader(credentials=aws_credentials_mock)
+        sut = S3Uploader()
         sut.upload(source_file_paths=source_file_paths, bucket=bucket)
 
         s3_bucket_object_uploader_mock.assert_called_once()

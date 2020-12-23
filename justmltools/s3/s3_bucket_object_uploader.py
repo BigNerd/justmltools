@@ -1,4 +1,4 @@
-import boto3
+from boto3 import resource
 
 from typing import Optional
 from justmltools.s3.aws_credentials import AwsCredentials
@@ -8,9 +8,9 @@ class S3BucketObjectUploader:
 
     def __init__(self, credentials: Optional[AwsCredentials] = None):
         if credentials is None:
-            self.__s3 = boto3.resource("s3")
+            self.__s3 = resource("s3")
         else:
-            self.__s3 = boto3.resource(
+            self.__s3 = resource(
                 's3',
                 aws_access_key_id=credentials.aws_secret_access_key_id,
                 aws_secret_access_key=credentials.aws_secret_access_key,

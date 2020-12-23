@@ -5,9 +5,9 @@ from justmltools.s3.s3_bucket_object_downloader import S3BucketObjectDownloader
 from justmltools.s3.aws_credentials import AwsCredentials
 
 
-@patch('os.path.isdir', return_value=True)
-@patch('os.path.isfile', return_value=True)
-@patch('boto3.resource')
+@patch('os.path.isdir', autospec=True, return_value=True)
+@patch('os.path.isfile', autospec=True, return_value=True)
+@patch('boto3.resource', autospec=True)
 class TestS3BucketObjectDownloader(TestCase):
 
     def test_init(
@@ -17,6 +17,7 @@ class TestS3BucketObjectDownloader(TestCase):
             os_path_is_dir: MagicMock
     ):
         sut = S3BucketObjectDownloader()
+
         sut = S3BucketObjectDownloader(
             credentials=AwsCredentials(
                 aws_secret_access_key_id="test_id",

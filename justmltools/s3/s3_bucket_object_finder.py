@@ -1,4 +1,4 @@
-import boto3
+from boto3 import client
 
 from typing import Optional
 from justmltools.s3.aws_credentials import AwsCredentials
@@ -11,9 +11,9 @@ class S3BucketObjectFinder:
 
     def __init__(self, credentials: Optional[AwsCredentials] = None):
         if credentials is None:
-            self.__s3 = boto3.client("s3")
+            self.__s3 = client("s3")
         else:
-            self.__s3 = boto3.client(
+            self.__s3 = client(
                 "s3",
                 aws_access_key_id=credentials.aws_secret_access_key_id,
                 aws_secret_access_key=credentials.aws_secret_access_key,

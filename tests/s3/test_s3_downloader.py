@@ -4,9 +4,9 @@ from unittest.mock import MagicMock, patch
 
 class TestS3Downloader(TestCase):
 
-    @patch('justmltools.s3.aws_credentials.AwsCredentials')
-    @patch('justmltools.s3.s3_bucket_object_downloader.S3BucketObjectDownloader')
-    @patch('justmltools.s3.s3_bucket_object_finder.S3BucketObjectFinder')
+    @patch('justmltools.s3.aws_credentials.AwsCredentials', autospec=True)
+    @patch('justmltools.s3.s3_bucket_object_downloader.S3BucketObjectDownloader', autospec=True)
+    @patch('justmltools.s3.s3_bucket_object_finder.S3BucketObjectFinder', autospec=True)
     def test_download(
         self,
         s3_bucket_object_finder_mock: MagicMock,
@@ -17,7 +17,7 @@ class TestS3Downloader(TestCase):
         s3_bucket_object_finder_mock.return_value.get_matching_s3_keys.return_value = found_keys
 
         from justmltools.s3.s3_downloader import S3Downloader
-        sut = S3Downloader(credentials=aws_credentials_mock)
+        sut = S3Downloader()
         sut.download(bucket="", target_path="")
 
         s3_bucket_object_finder_mock.assert_called_once()
