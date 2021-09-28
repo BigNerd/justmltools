@@ -20,9 +20,15 @@ class Tracker:
         self.__experiment_name: str = experiment_name
         self.__artifact_root_path: str = artifact_root_path
 
-    def start_run(self):
+    def start_run(self) -> str:
+        """ returns the active run id """
         mlflow.set_experiment(self.__experiment_name)
         mlflow.start_run()
+        active_run = mlflow.active_run()
+        run_id = ""
+        if active_run is not None:
+            run_id = active_run.info.run_id
+        return run_id
 
     def track(self,
               artifact_file_paths: Optional[List[str]] = None,
