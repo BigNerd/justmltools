@@ -24,12 +24,23 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         self.__experiment_name = experiment_name
         self.__run_id = run_id
         self.__resolved_run_id = None
+        self.__resolved_experiment_id = None
+
+    @property
+    def resolved_experiment_id(self):
+        if self.__resolved_experiment_id is None:
+            self.__resolved_experiment_id = self.__resolve_experiment_id(self.__experiment_name)
+        return self.__resolved_experiment_id
 
     @property
     def resolved_run_id(self):
         if self.__resolved_run_id is None:
             self.__resolved_run_id = self.__resolve_run_id(self.__run_id)
         return self.__resolved_run_id
+
+    @property
+    def relative_run_url(self):
+        return f"#/experiments/{self.resolved_experiment_id}/runs/{self.resolved_run_id}"
 
     def find_or_download_run_metrics(self) -> Dict[str, Any]:
         run_data: RunData = self.__get_run_data()
@@ -59,6 +70,18 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         run_data: RunData = run.data
         return run_data
 
+    def __resolve_experiment_id(self, experiment_name: str) -> str:
+        """
+        :param experiment_name: the name of the experiment
+        :return: the id of the experiment
+        """
+        client: MlflowClient = self.__get_mlflow_client()
+        experiment: Experiment = client.get_experiment_by_name(self.__experiment_name)
+        experiment_id: str = experiment.experiment_id
+        if experiment_id is None:
+            raise ValueError(f"no id found for experiment {self.__experiment_name}")
+        return experiment_id
+
     def __resolve_run_id(self, run_id: str) -> str:
         """ maps the special run_id "latest" to a concrete id, returns all others as is
         :param run_id: "latest" or a valid MLflow run id of the experiment
@@ -67,10 +90,8 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         if run_id != "latest":
             return run_id  # leave as is
         client: MlflowClient = self.__get_mlflow_client()
-        experiment: Experiment = client.get_experiment_by_name(self.__experiment_name)
-        experiment_id: str = experiment.experiment_id
         run_infos: List[RunInfo] = \
-            client.list_run_infos(experiment_id=experiment_id, run_view_type=ViewType.ACTIVE_ONLY)
+            client.list_run_infos(experiment_id=self.__resolved_experiment_id, run_view_type=ViewType.ACTIVE_ONLY)
         latest_start_time = 0
         latest_run_info: Optional[RunInfo] = None
         for run_info in run_infos:

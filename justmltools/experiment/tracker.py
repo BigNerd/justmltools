@@ -34,7 +34,9 @@ class Tracker:
               artifact_file_paths: Optional[List[str]] = None,
               parameters: Optional[Dict[str, Any]] = None,
               metrics: Optional[Dict[str, Any]] = None,
-              tags: Optional[Dict[str, str]] = None):
+              tags: Optional[Dict[str, str]] = None,
+              note: Optional[str] = None,
+    ):
         if artifact_file_paths:
             self.track_artifacts(artifact_file_paths=artifact_file_paths)
         if parameters:
@@ -52,6 +54,8 @@ class Tracker:
         if tags:
             for tag_name, tag_value in tags.items():
                 mlflow.set_tag(tag_name, tag_value)
+        if note:
+            mlflow.set_tag("mlflow.note.content", note)
 
     def track_artifacts(self, artifact_file_paths: List[str]):
         for artifact_file_path in artifact_file_paths:
