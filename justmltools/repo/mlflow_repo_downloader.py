@@ -91,7 +91,7 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
             return run_id  # leave as is
         client: MlflowClient = self.__get_mlflow_client()
         run_infos: List[RunInfo] = \
-            client.list_run_infos(experiment_id=self.__resolved_experiment_id, run_view_type=ViewType.ACTIVE_ONLY)
+            client.list_run_infos(experiment_id=self.resolved_experiment_id, run_view_type=ViewType.ACTIVE_ONLY)
         latest_start_time = 0
         latest_run_info: Optional[RunInfo] = None
         for run_info in run_infos:
