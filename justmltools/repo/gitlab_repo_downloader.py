@@ -29,12 +29,12 @@ class GitlabRepoDownloader(AbstractRepoDownloader):
         url_encoded_remote_path = urllib.parse.quote(remote_path, safe="")
         url = f"https://{self.__host}/api/v4/projects/{self.__project_id}/" \
               f"repository/files/{url_encoded_remote_path}/raw?ref={self.__ref}"
-        print(url)
+        print(f"downloading {url} ...")
         r = requests.get(url, headers=headers)
         if r.status_code == 200:
             self._save_as_file(file_content=r.text, target_path=target_path)
         else:
-            raise Exception(f"Could not download from {remote_path}, received status code: {r.status_code}")
+            raise Exception(f"Could not download {url}, received status code: {r.status_code}")
 
     @staticmethod
     def _save_as_file(file_content: str, target_path):
