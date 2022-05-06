@@ -6,6 +6,7 @@ It provides the following features:
 * standardized path layout for machine learning input and output data
 * easy data transfer between a local file system and an [MLflow repository](https://www.mlflow.org/)
 * easy data transfer between a local file system and an [AWS S3 bucket](https://aws.amazon.com/s3/)
+* easy data transfer from a GitLab repository to the local file system
 
 ## Installation
 

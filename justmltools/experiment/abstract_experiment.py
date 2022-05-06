@@ -1,26 +1,17 @@
 import abc
 import os
+import pkg_resources
 
+from typing import List, Optional
 from justmltools.config.bucket_data_path_config import BucketDataPathConfig
 from justmltools.config.local_data_path_config import LocalDataPathConfig
 from justmltools.config.mlflow_data_path_config import MlflowDataPathConfig
-
-from justmltools.repo.bucket_repo_downloader import BucketRepoDownloader
-from justmltools.repo.mlflow_repo_downloader import MlflowRepoDownloader
 
 
 class AbstractExperiment(abc.ABC):
 
     def __init__(self, project_name: str):
         self.__project_name = project_name
-
-    @abc.abstractmethod
-    def _get_bucket_repo_downloader(self) -> BucketRepoDownloader:
-        pass
-
-    @abc.abstractmethod
-    def _get_mlflow_repo_downloader(self, experiment_name: str, run_id: str) -> MlflowRepoDownloader:
-        pass
 
     def _get_local_data_path_config(self) -> LocalDataPathConfig:
         data_path_config = LocalDataPathConfig(
@@ -51,3 +42,15 @@ class AbstractExperiment(abc.ABC):
 
     def _get_bucket_prefix(self) -> str:
         return f"projects/{self.__project_name}"
+
+    @staticmethod
+    def _get_installed_packages() -> List[str]:
+        installed_packages = sorted([f"{i.key}=={i.version}" for i in pkg_resources.working_set])
+        return installed_packages
+
+    @staticmethod
+    def _get_git_commit_hash() -> Optional[str]:
+        git_commit_hash = os.environ.get("GIT_COMMIT_HASH")
+        if git_commit_hash is not None and len(git_commit_hash) == 0:
+            git_commit_hash = None
+        return git_commit_hash
