@@ -3,3 +3,4 @@ mlflow
 requests
 six==1.15.0
 inflection
+protobuf~=3.19.0  # see https://discuss.streamlit.io/t/typeerror-descriptors-cannot-not-be-created-directly/25639
