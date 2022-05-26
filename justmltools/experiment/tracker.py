@@ -7,7 +7,10 @@ from os.path import basename, dirname, sep
 
 
 class Metric:
-
+    """ Metric enables you to collect multiple values of a step dependent metric in your metrics dictionary;
+        if your metric is not step dependent, you still can but need not use this class
+        in order to track your single metric value
+    """
     def __init__(self, key: str, value, step: Optional[int]):
         self.key = key
         self.value = value
@@ -15,19 +18,45 @@ class Metric:
 
 
 class Tracker:
+    """
+    Tracker is a simple facade to the MLflow API;
+
+    You can use it one of two ways:
+    a) using the with statement syntax (recommended for better readability thanks to indentation)
+    ---------------------------------------------------------------------------------------------
+    with Tracker(experiment_name="...", artifact_root_path="...") as tracker:
+        run_id = tracker.get_active_run_id()
+        ...
+        tracker.track(...)
+        ...
+
+    b) using explicit calls to start_run and end_run:
+    ---------------------------------------------------------------------------------------------
+    tracker = Tracker(experiment_name="...", artifact_root_path="...")
+    run_id = tracker.start_run()
+    ...
+    tracker.track(...)
+    ...
+    tracker.end_run()
+    """
 
     def __init__(self, experiment_name: str, artifact_root_path: str):
         self.__experiment_name: str = experiment_name
         self.__artifact_root_path: str = artifact_root_path
 
+    def __enter__(self):
+        self.start_run()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.end_run()
+        return False
+
     def start_run(self) -> str:
         """ returns the active run id """
         mlflow.set_experiment(self.__experiment_name)
         mlflow.start_run()
-        active_run = mlflow.active_run()
-        run_id = ""
-        if active_run is not None:
-            run_id = active_run.info.run_id
+        run_id = self.get_active_run_id()
         return run_id
 
     def track(self,
@@ -96,6 +125,15 @@ class Tracker:
     def __zip_dir(dir_path: str) -> str:
         shutil.make_archive(base_name=dir_path, format="zip", root_dir=dirname(dir_path), base_dir=basename(dir_path))
         return dir_path + ".zip"
+
+    @staticmethod
+    def get_active_run_id() -> str:
+        """ returns the mlflow active run id or an empty string """
+        active_run = mlflow.active_run()
+        run_id = ""
+        if active_run is not None:
+            run_id = active_run.info.run_id
+        return run_id
 
     @staticmethod
     def end_run():
