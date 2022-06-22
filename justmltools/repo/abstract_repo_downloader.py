@@ -13,6 +13,9 @@ class AbstractRepoDownloader(abc.ABC):
         self._remote_data_path_config = remote_data_path_config
         self._local_data_path_config = local_data_path_config
 
+    def get_local_data_path_config(self) -> LocalDataPathConfig:
+        return self._local_data_path_config
+
     def find_or_download_input_config_object(self, name_segments: List[str]) -> str:
         base_local_path: str = self._local_data_path_config.get_input_config_path()
         base_remote_path = self._remote_data_path_config.get_input_config_path()

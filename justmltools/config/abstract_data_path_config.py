@@ -14,6 +14,9 @@ class AbstractDataPathConfig(abc.ABC):
     def get_prefix(self):
         return self._prefix
 
+    def set_prefix(self, prefix: str):
+        self._prefix = prefix
+
     def get_input_config_path(self):
         return self._join_segments(self._get_input_config_segments())
 
