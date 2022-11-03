@@ -70,8 +70,10 @@ class Tracker:
             self.track_artifacts(artifact_file_paths=artifact_file_paths)
         if parameters:
             for parameter_name, parameter_value in parameters.items():
-                if len(str(parameter_value)) > 500:
-                    parameter_value = str(parameter_value)[:500]  # MLflow rejects params longer than 500 chars
+                max_len = 500  # MLflow rejects string representations of params longer than 500 chars
+                if len(str(parameter_value)) > max_len:
+                    suffix = "..."
+                    parameter_value = str(parameter_value)[:max_len - len(suffix)] + suffix
                 mlflow.log_param(parameter_name, parameter_value)
         if metrics:
             for metric_name, metric_value in metrics.items():
