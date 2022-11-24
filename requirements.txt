@@ -1,5 +1,5 @@
 boto3
-mlflow
+mlflow<2.0
 requests
 six==1.15.0
 inflection
