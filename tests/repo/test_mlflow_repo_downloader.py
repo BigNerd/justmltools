@@ -27,7 +27,7 @@ class TestMlflowRepoDownloader(TestCase):
         expected_path = "my_config_dir/my_config.json"
         with patch.object(
                 sut, '_AbstractRepoDownloader__find_or_download_object', return_value=expected_path) as method:
-            actual_path: str = sut.find_or_download_input_config_object("my_config.json")
+            actual_path: str = sut.find_or_download_input_config_object(["my_config.json"])
             self.assertEqual(expected_path, actual_path)
 
     def test_find_or_download_output_object(self):
@@ -37,7 +37,7 @@ class TestMlflowRepoDownloader(TestCase):
         expected_path = "my_output_dir/my_output.csv"
         with patch.object(
                 sut, '_AbstractRepoDownloader__find_or_download_object', return_value=expected_path) as method:
-            actual_path: str = sut.find_or_download_output_object("my_output.csv")
+            actual_path: str = sut.find_or_download_output_object(["my_output.csv"])
             self.assertEqual(expected_path, actual_path)
 
     def test_find_or_download_params(self):

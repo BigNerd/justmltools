@@ -24,6 +24,7 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         self.__experiment_name = experiment_name
         self.__run_id = run_id
         self.__resolved_run_id = None
+        self.__resolved_run_name = None
         self.__resolved_experiment_id = None
 
     @property
@@ -37,6 +38,13 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         if self.__resolved_run_id is None:
             self.__resolved_run_id = self.__resolve_run_id(self.__run_id)
         return self.__resolved_run_id
+
+    @property
+    def resolved_run_name(self):
+        if self.__resolved_run_name is None:
+            run_info: RunInfo = self.__get_run_info()
+            self.__resolved_run_name = run_info.run_name
+        return self.__resolved_run_name
 
     @property
     def relative_run_url(self):
@@ -65,10 +73,21 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
 
     @lru_cache(maxsize=1)
     def __get_run_data(self) -> RunData:
-        client: MlflowClient = self.__get_mlflow_client()
-        run: Run = client.get_run(run_id=self.resolved_run_id)
+        run: Run = self.__get_run()
         run_data: RunData = run.data
         return run_data
+
+    @lru_cache(maxsize=1)
+    def __get_run_info(self) -> RunInfo:
+        run: Run = self.__get_run()
+        run_info: RunInfo = run.info
+        return run_info
+
+    @lru_cache(maxsize=1)
+    def __get_run(self) -> Run:
+        client: MlflowClient = self.__get_mlflow_client()
+        run: Run = client.get_run(run_id=self.resolved_run_id)
+        return run
 
     def __resolve_experiment_id(self, experiment_name: str) -> str:
         """
