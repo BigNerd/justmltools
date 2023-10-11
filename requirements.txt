@@ -2,6 +2,6 @@ boto3
 mlflow<3.0.0
 requests
 six
-#inflection
+inflection
 #protobuf~=3.19.0  # see https://discuss.streamlit.io/t/typeerror-descriptors-cannot-not-be-created-directly/25639
 urllib3<1.27,>=1.25.4; python_version < "3.10"  # botocore 1.31.62 requires urllib3<1.27,>=1.25.4; python_version < "3.10", but you'll have urllib3 2.0.6 which is incompatible

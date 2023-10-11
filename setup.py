@@ -5,7 +5,7 @@ from version import get_version
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-requirements = ["boto3", "mlflow<3.0.0", "requests", "six"]
+requirements = ["boto3", "inflection", "mlflow<3.0.0", "requests", "six"]
 
 setuptools.setup(
     name="justmltools",
