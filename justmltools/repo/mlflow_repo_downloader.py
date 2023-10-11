@@ -109,14 +109,14 @@ class MlflowRepoDownloader(AbstractRepoDownloader):
         if run_id != "latest":
             return run_id  # leave as is
         client: MlflowClient = self.__get_mlflow_client()
-        run_infos: List[RunInfo] = \
-            client.list_run_infos(experiment_id=self.resolved_experiment_id, run_view_type=ViewType.ACTIVE_ONLY)
+        runs: List[Run] = \
+            client.search_runs(experiment_ids=[self.resolved_experiment_id], run_view_type=ViewType.ACTIVE_ONLY)
         latest_start_time = 0
         latest_run_info: Optional[RunInfo] = None
-        for run_info in run_infos:
-            if run_info.start_time > latest_start_time:
-                latest_start_time = run_info.start_time
-                latest_run_info = run_info
+        for run in runs:
+            if run.info.start_time > latest_start_time:
+                latest_start_time = run.info.start_time
+                latest_run_info = run.info
         if latest_run_info is None:
             raise ValueError(f"no latest active run info found for experiment {self.__experiment_name}")
         return latest_run_info.run_id
